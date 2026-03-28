@@ -964,37 +964,50 @@ export default function App() {
   const mouseX = useSpring(0, springConfig);
   const mouseY = useSpring(0, springConfig);
 
-  // Forward ElevenLabs voice conversation data to LeadConnector webhook
+  // Forward ElevenLabs voice conversation data to LeadConnector webhook.
+  // The widget fires "elevenlabs-convai:call" (NOT "call-ended") just before
+  // startSession() is called. event.detail.config is passed straight into
+  // startSession(), so injecting onDisconnect here is the correct hook point.
   useEffect(() => {
-    console.log('[CC] ElevenLabs call-ended listener registered');
+    console.log('[CC] ElevenLabs convai:call interceptor registered');
 
-    const handleCallEnded = (event: Event) => {
-      const detail = (event as CustomEvent).detail ?? {};
-      console.log('[CC] elevenlabs-convai:call-ended fired — detail:', detail);
+    const handleCallStart = (event: Event) => {
+      const config = (event as CustomEvent).detail?.config;
+      if (!config) {
+        console.warn('[CC] elevenlabs-convai:call fired but detail.config is missing');
+        return;
+      }
+      console.log('[CC] elevenlabs-convai:call intercepted — injecting onDisconnect');
 
-      const payload = {
-        source: 'elevenlabs-voice-widget',
-        submittedAt: new Date().toISOString(),
-        pageUrl: window.location.href,
-        ...detail,
-      };
+      const prev = config.onDisconnect as ((d: unknown) => void) | undefined;
+      config.onDisconnect = (details: unknown) => {
+        if (prev) prev(details);
+        console.log('[CC] onDisconnect fired — details:', details);
 
-      fetch(CHAT_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-        .then(async (res) => {
-          const body = await res.text();
-          console.log('[CC] /api/forward-chat response:', res.status, body);
+        const payload = {
+          source: 'elevenlabs-voice-widget',
+          submittedAt: new Date().toISOString(),
+          pageUrl: window.location.href,
+          ...(details && typeof details === 'object' ? details : {}),
+        };
+
+        fetch(CHAT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         })
-        .catch((err) => console.error('[CC] /api/forward-chat fetch error:', err));
+          .then(async (res) => {
+            const body = await res.text();
+            console.log('[CC] /api/forward-chat response:', res.status, body);
+          })
+          .catch((err) => console.error('[CC] /api/forward-chat fetch error:', err));
+      };
     };
 
-    window.addEventListener('elevenlabs-convai:call-ended', handleCallEnded);
+    window.addEventListener('elevenlabs-convai:call', handleCallStart);
     return () => {
-      window.removeEventListener('elevenlabs-convai:call-ended', handleCallEnded);
-      console.log('[CC] ElevenLabs call-ended listener removed');
+      window.removeEventListener('elevenlabs-convai:call', handleCallStart);
+      console.log('[CC] ElevenLabs convai:call interceptor removed');
     };
   }, []);
 
