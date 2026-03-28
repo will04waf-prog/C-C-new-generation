@@ -899,6 +899,8 @@ const WhatWeDo = () => {
   );
 };
 
+const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/nN4wWxnzfijMYbmezLTC/webhook-trigger/d79f1cd6-29f9-4469-9fab-8311a104841c';
+
 export default function App() {
   const { scrollYProgress } = useScroll();
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
@@ -909,6 +911,26 @@ export default function App() {
   const springConfig = { damping: 25, stiffness: 150 };
   const mouseX = useSpring(0, springConfig);
   const mouseY = useSpring(0, springConfig);
+
+  // Forward ElevenLabs voice conversation data to LeadConnector webhook
+  useEffect(() => {
+    const handleCallEnded = (event: Event) => {
+      const detail = (event as CustomEvent).detail ?? {};
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'elevenlabs-voice-widget',
+          submittedAt: new Date().toISOString(),
+          pageUrl: window.location.href,
+          ...detail,
+        }),
+      }).catch(console.error);
+    };
+
+    window.addEventListener('elevenlabs-convai:call-ended', handleCallEnded);
+    return () => window.removeEventListener('elevenlabs-convai:call-ended', handleCallEnded);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
