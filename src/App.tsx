@@ -825,9 +825,14 @@ const WhatWeDo = () => {
 
         <div className="relative mt-4">
           {/* Blueprint background — purely decorative, behind gallery */}
-          <div className="absolute inset-0 opacity-[0.1] pointer-events-none flex items-center justify-center overflow-hidden">
-            <div className="w-full max-w-4xl scale-125 animate-[spin_60s_linear_infinite]">
-              <HouseSVG />
+          <div
+            className="absolute inset-0 opacity-[0.1] pointer-events-none flex items-center justify-center overflow-hidden"
+            style={{ contain: 'strict' }}
+          >
+            <div style={{ transform: 'scale(1.25)', willChange: 'transform' }}>
+              <div className="w-full max-w-4xl animate-[spin_60s_linear_infinite]" style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
+                <HouseSVG />
+              </div>
             </div>
           </div>
 
