@@ -793,32 +793,33 @@ const WhatWeDo = () => {
           <p className="text-white/50 max-w-xl">Every project tells a story. Browse our completed work across all service categories.</p>
         </div>
 
-        <div className="flex flex-col items-center sticky top-24 z-50">
-          <div className="w-full overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-            <div className="flex items-center gap-2 bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] min-w-max mx-auto">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  aria-label={cat.label}
-                  className={`px-4 md:px-6 py-4 rounded-xl transition-all duration-500 flex items-center gap-2 md:gap-3 group relative overflow-hidden ${
-                    activeCategory === cat.id
-                      ? 'text-white'
-                      : 'text-white/40 hover:text-white/70'
-                  }`}
-                >
-                  {activeCategory === cat.id && (
-                    <motion.div
-                      layoutId="active-tab"
-                      className="absolute inset-0 bg-blue-500/20 border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                  <cat.icon size={18} className="relative z-10" />
-                  <span className="font-bold text-xs tracking-widest relative z-10">{cat.label}</span>
-                </button>
-              ))}
-            </div>
+        <div className="flex justify-center sticky top-24 z-50 px-4">
+          <div
+            className="flex items-center gap-1 bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-x-auto max-w-full"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                aria-label={cat.label}
+                className={`px-4 py-3 rounded-xl transition-all duration-500 flex items-center gap-2 relative overflow-hidden shrink-0 ${
+                  activeCategory === cat.id
+                    ? 'text-white'
+                    : 'text-white/40 hover:text-white/70'
+                }`}
+              >
+                {activeCategory === cat.id && (
+                  <motion.div
+                    layoutId="active-tab"
+                    className="absolute inset-0 bg-blue-500/20 border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <cat.icon size={16} className="relative z-10 shrink-0" />
+                <span className="font-bold text-xs tracking-wider relative z-10">{cat.label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
