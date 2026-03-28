@@ -35,6 +35,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-black text-white antialiased selection:bg-white selection:text-black;
   }

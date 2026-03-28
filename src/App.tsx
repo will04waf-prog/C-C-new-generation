@@ -5,23 +5,20 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'motion/react';
-import { 
-  Hammer, 
-  Fence, 
-  PaintBucket, 
-  Layers, 
-  ChevronRight, 
-  ArrowRight, 
-  Mail, 
-  CheckCircle2, 
+import {
+  Hammer,
+  Fence,
+  PaintBucket,
+  Layers,
+  ArrowRight,
+  Mail,
+  CheckCircle2,
   Star,
   Menu,
   X,
-  Ruler,
-  Home,
-  Construction,
   Phone,
-  Send
+  Send,
+  Grid3x3
 } from 'lucide-react';
 
 // --- Components ---
@@ -721,7 +718,7 @@ const WhatWeDo = () => {
     { id: 'Remodeling', icon: Hammer, label: 'REMODELING' },
     { id: 'Brickwork', icon: Layers, label: 'BRICKWORK' },
     { id: 'Painting', icon: PaintBucket, label: 'PAINTING' },
-    { id: 'Ceramic', icon: CheckCircle2, label: 'CERAMIC' }
+    { id: 'Ceramic', icon: Grid3x3, label: 'CERAMIC' }
   ];
 
   const fencingImages = [
