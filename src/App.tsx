@@ -964,50 +964,48 @@ export default function App() {
   const mouseX = useSpring(0, springConfig);
   const mouseY = useSpring(0, springConfig);
 
-  // Forward ElevenLabs voice conversation data to LeadConnector webhook.
-  // The widget fires "elevenlabs-convai:call" (NOT "call-ended") just before
-  // startSession() is called. event.detail.config is passed straight into
-  // startSession(), so injecting onDisconnect here is the correct hook point.
+  // Detect ElevenLabs call end via WebSocket close.
+  // The widget source hard-overwrites every callback (onDisconnect, onStatusChange, etc.)
+  // after the elevenlabs-convai:call event, so config injection does not work.
+  // The WebSocket is the only reliable signal: it always closes when a call ends.
   useEffect(() => {
-    console.log('[CC] ElevenLabs convai:call interceptor registered');
+    const OrigWS = window.WebSocket;
 
-    const handleCallStart = (event: Event) => {
-      const config = (event as CustomEvent).detail?.config;
-      if (!config) {
-        console.warn('[CC] elevenlabs-convai:call fired but detail.config is missing');
-        return;
-      }
-      console.log('[CC] elevenlabs-convai:call intercepted — injecting onDisconnect');
+    window.WebSocket = new Proxy(OrigWS, {
+      construct(target, args) {
+        const ws: WebSocket = Reflect.construct(target, args);
+        const url = String(args[0] ?? '');
 
-      const prev = config.onDisconnect as ((d: unknown) => void) | undefined;
-      config.onDisconnect = (details: unknown) => {
-        if (prev) prev(details);
-        console.log('[CC] onDisconnect fired — details:', details);
+        if (url.includes('elevenlabs')) {
+          console.log('[CC] ElevenLabs WebSocket opened:', url);
+          const callStartedAt = new Date().toISOString();
 
-        const payload = {
-          source: 'elevenlabs-voice-widget',
-          submittedAt: new Date().toISOString(),
-          pageUrl: window.location.href,
-          ...(details && typeof details === 'object' ? details : {}),
-        };
+          ws.addEventListener('close', () => {
+            console.log('[CC] ElevenLabs WebSocket closed — forwarding to /api/forward-chat');
+            fetch(CHAT_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                source: 'elevenlabs-voice-widget',
+                pageUrl: window.location.href,
+                callStartedAt,
+                callEndedAt: new Date().toISOString(),
+              }),
+            })
+              .then(async (res) => {
+                const body = await res.text();
+                console.log('[CC] /api/forward-chat response:', res.status, body);
+              })
+              .catch((err) => console.error('[CC] /api/forward-chat fetch error:', err));
+          });
+        }
 
-        fetch(CHAT_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        })
-          .then(async (res) => {
-            const body = await res.text();
-            console.log('[CC] /api/forward-chat response:', res.status, body);
-          })
-          .catch((err) => console.error('[CC] /api/forward-chat fetch error:', err));
-      };
-    };
+        return ws;
+      },
+    }) as typeof WebSocket;
 
-    window.addEventListener('elevenlabs-convai:call', handleCallStart);
     return () => {
-      window.removeEventListener('elevenlabs-convai:call', handleCallStart);
-      console.log('[CC] ElevenLabs convai:call interceptor removed');
+      window.WebSocket = OrigWS;
     };
   }, []);
 
