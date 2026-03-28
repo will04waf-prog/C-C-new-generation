@@ -899,6 +899,7 @@ const WhatWeDo = () => {
 };
 
 const LEAD_ENDPOINT = '/api/forward-lead';
+const CHAT_ENDPOINT = '/api/forward-chat';
 
 export default function App() {
   const { scrollYProgress } = useScroll();
@@ -915,7 +916,7 @@ export default function App() {
   useEffect(() => {
     const handleCallEnded = (event: Event) => {
       const detail = (event as CustomEvent).detail ?? {};
-      fetch(LEAD_ENDPOINT, {
+      fetch(CHAT_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
