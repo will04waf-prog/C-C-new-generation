@@ -962,7 +962,7 @@ export default function App() {
             
             <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-8 leading-[1.1] text-gradient">
               Built for Today. <br />
-              <span className="text-white">Made to Last for the Next Generation.</span>
+              <span className="text-white">Made to Last for the <span className="text-blue-400 drop-shadow-[0_0_25px_rgba(59,130,246,0.4)]">Next Generation.</span></span>
             </h1>
             
             <p className="text-lg md:text-xl text-white/65 mb-10 leading-relaxed max-w-3xl mx-auto">
