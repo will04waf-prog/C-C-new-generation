@@ -326,7 +326,7 @@ const Navbar = () => {
               >
                 Contact Us
               </a>
-              <a href="mailto:cconstruccion.23@gmail.com" className="text-white/40 font-medium">cconstruccion.23@gmail.com</a>
+              <a href="mailto:quotes@ccnewgeneration.com" className="text-white/40 font-medium">quotes@ccnewgeneration.com</a>
             </div>
           </motion.div>
         )}
@@ -902,55 +902,6 @@ const LEAD_ENDPOINT = '/api/forward-lead';
 const CHAT_ENDPOINT = '/api/forward-chat';
 
 // ── TEMPORARY DEBUG BUTTON ── remove after webhook is confirmed working ──────
-const TestWebhookButton = () => {
-  const [status, setStatus] = useState<string | null>(null);
-
-  const runTest = async () => {
-    setStatus('sending…');
-    console.log('[CC TEST] Posting sample payload to', LEAD_ENDPOINT);
-    const payload = {
-      source: 'manual-test-button',
-      submittedAt: new Date().toISOString(),
-      pageUrl: window.location.href,
-      firstName: 'Test',
-      lastName: 'Lead',
-      email: 'test@ccnewgeneration.com',
-      phone: '555-000-0000',
-      description: 'Automated test from debug button',
-    };
-    console.log('[CC TEST] Payload:', payload);
-    try {
-      const res = await fetch(LEAD_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const body = await res.text();
-      console.log('[CC TEST] Response status:', res.status);
-      console.log('[CC TEST] Response body:', body);
-      setStatus(res.ok ? `✓ ${res.status} OK` : `✗ ${res.status} — ${body}`);
-    } catch (err) {
-      console.error('[CC TEST] Fetch error:', err);
-      setStatus(`✗ fetch failed — ${err}`);
-    }
-  };
-
-  return (
-    <div className="fixed bottom-6 left-6 z-[9999] flex flex-col items-start gap-2">
-      <button
-        onClick={runTest}
-        className="px-4 py-2 bg-yellow-400 text-black text-xs font-bold rounded-lg shadow-lg hover:bg-yellow-300 active:scale-95 transition-all uppercase tracking-widest"
-      >
-        TEST WEBHOOK
-      </button>
-      {status && (
-        <span className="px-3 py-1 bg-black/80 text-white text-xs font-mono rounded-lg border border-white/20">
-          {status}
-        </span>
-      )}
-    </div>
-  );
-};
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -1203,7 +1154,7 @@ export default function App() {
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-white/40">
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-            <a href="mailto:cconstruccion.23@gmail.com" className="hover:text-white transition-colors">cconstruccion.23@gmail.com</a>
+            <a href="mailto:quotes@ccnewgeneration.com" className="hover:text-white transition-colors">quotes@ccnewgeneration.com</a>
             <span>© 2026 C&C New Generation. All rights reserved.</span>
           </div>
         </div>
@@ -1214,8 +1165,6 @@ export default function App() {
         <elevenlabs-convai agent-id="agent_8801km798d35et1b2g966m19rtrs"></elevenlabs-convai>
       </div>
 
-      {/* ── TEMPORARY DEBUG BUTTON ── remove after webhook is confirmed working ── */}
-      <TestWebhookButton />
     </div>
   );
 }
