@@ -281,13 +281,13 @@ const Navbar = () => {
         </div>
         
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {['Services', 'Reviews'].map((item) => (
-            <a 
-              key={item}
-              href={`#${item.toLowerCase().replace(/\s+/g, '')}`} 
+          {[['Services', 'services'], ['Our Work', 'work'], ['Reviews', 'reviews']].map(([label, anchor]) => (
+            <a
+              key={anchor}
+              href={`#${anchor}`}
               className="text-white/70 hover:text-white transition-colors"
             >
-              {item}
+              {label}
             </a>
           ))}
           <a 
@@ -312,14 +312,14 @@ const Navbar = () => {
             className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/10 overflow-hidden md:hidden"
           >
             <div className="p-8 flex flex-col gap-6">
-              {['Services', 'Reviews'].map((item) => (
-                <a 
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, '')}`} 
-                  className="text-2xl font-bold tracking-tight" 
+              {[['Services', 'services'], ['Our Work', 'work'], ['Reviews', 'reviews']].map(([label, anchor]) => (
+                <a
+                  key={anchor}
+                  href={`#${anchor}`}
+                  className="text-2xl font-bold tracking-tight"
                   onClick={() => setIsOpen(false)}
                 >
-                  {item}
+                  {label}
                 </a>
               ))}
               <div className="h-[1px] bg-white/10 my-2" />
@@ -541,8 +541,9 @@ const ContactForm = () => {
           ) : (
             <form onSubmit={handleSubmit} className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">First Name</label>
-                <input 
+                <label htmlFor="firstName" className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">First Name</label>
+                <input
+                  id="firstName"
                   required
                   type="text"
                   placeholder="John"
@@ -552,8 +553,9 @@ const ContactForm = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Last Name</label>
-                <input 
+                <label htmlFor="lastName" className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Last Name</label>
+                <input
+                  id="lastName"
                   required
                   type="text"
                   placeholder="Doe"
@@ -563,10 +565,11 @@ const ContactForm = () => {
                 />
               </div>
               <div className="md:col-span-2 space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
+                <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
                 <div className="relative">
                   <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input 
+                  <input
+                    id="email"
                     required
                     type="email"
                     placeholder="john@example.com"
@@ -577,10 +580,11 @@ const ContactForm = () => {
                 </div>
               </div>
               <div className="md:col-span-2 space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Phone Number</label>
+                <label htmlFor="phone" className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Phone Number</label>
                 <div className="relative">
                   <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input 
+                  <input
+                    id="phone"
                     required
                     type="tel"
                     placeholder="(555) 000-0000"
@@ -591,8 +595,9 @@ const ContactForm = () => {
                 </div>
               </div>
               <div className="md:col-span-2 space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Tell Us About Your Project</label>
-                <textarea 
+                <label htmlFor="description" className="text-xs font-bold uppercase tracking-widest text-slate-500 ml-1">Tell Us About Your Project</label>
+                <textarea
+                  id="description"
                   required
                   rows={4}
                   placeholder="Tell us about the job you need done..."
@@ -792,29 +797,37 @@ const WhatWeDo = () => {
   return (
     <section id="work" className="py-24 px-6 relative overflow-visible">
       <div className="max-w-7xl mx-auto relative z-10">
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold mb-4">Our Work</h2>
+          <p className="text-white/50 max-w-xl">Every project tells a story. Browse our completed work across all service categories.</p>
+        </div>
+
         <div className="flex flex-col items-center sticky top-24 z-50">
-          <div className="flex items-center gap-2 bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-6 py-4 rounded-xl transition-all duration-500 flex items-center gap-3 group relative overflow-hidden ${
-                  activeCategory === cat.id 
-                    ? 'text-white' 
-                    : 'text-white/40 hover:text-white/70'
-                }`}
-              >
-                {activeCategory === cat.id && (
-                  <motion.div 
-                    layoutId="active-tab"
-                    className="absolute inset-0 bg-blue-500/20 border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <cat.icon size={18} className="relative z-10" />
-                <span className="font-bold text-xs tracking-widest relative z-10">{cat.label}</span>
-              </button>
-            ))}
+          <div className="w-full overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            <div className="flex items-center gap-2 bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] min-w-max mx-auto">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  aria-label={cat.label}
+                  className={`px-4 md:px-6 py-4 rounded-xl transition-all duration-500 flex items-center gap-2 md:gap-3 group relative overflow-hidden ${
+                    activeCategory === cat.id
+                      ? 'text-white'
+                      : 'text-white/40 hover:text-white/70'
+                  }`}
+                >
+                  {activeCategory === cat.id && (
+                    <motion.div
+                      layoutId="active-tab"
+                      className="absolute inset-0 bg-blue-500/20 border border-blue-400/30 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <cat.icon size={18} className="relative z-10" />
+                  <span className="font-bold text-xs tracking-widest relative z-10">{cat.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -960,7 +973,7 @@ export default function App() {
               <span className="text-white">Made to Last for the Next Generation.</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-white/50 mb-10 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white/65 mb-10 leading-relaxed max-w-3xl mx-auto">
               Expert fencing, remodeling, masonry, painting, and ceramic work built with precision, reliability, and lasting value
             </p>
             
@@ -1075,7 +1088,7 @@ export default function App() {
                 className="glass-card p-8 rounded-2xl text-left"
               >
                 <div className="flex gap-1 mb-4">
-                  {[...Array(t.stars)].map((_, i) => <Star key={i} size={14} className="fill-white text-white" />)}
+                  {[...Array(t.stars)].map((_, i) => <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />)}
                 </div>
                 <p className="text-white/70 mb-6 italic">"{t.text}"</p>
                 <p className="font-semibold">{t.name}</p>
@@ -1092,14 +1105,13 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-blue-500 rounded-sm flex items-center justify-center font-bold text-black italic">C&C</div>
-            <span className="font-bold tracking-tighter">C&C FENCING & REMODELING</span>
+            <span className="font-bold tracking-tighter">C&C NEW GENERATION</span>
           </div>
-          
-          <div className="flex gap-8 text-sm text-white/40">
+
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-white/40">
             <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">© 2026 C&C Group</a>
+            <a href="mailto:cconstruccion.23@gmail.com" className="hover:text-white transition-colors">cconstruccion.23@gmail.com</a>
+            <span>© 2026 C&C New Generation. All rights reserved.</span>
           </div>
         </div>
       </footer>
