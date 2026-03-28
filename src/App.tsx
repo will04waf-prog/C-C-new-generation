@@ -786,9 +786,9 @@ const WhatWeDo = () => {
   const currentCategory = categories.find(c => c.id === activeCategory)!;
 
   return (
-    <section id="work" className="py-16 px-6 relative overflow-visible">
+    <section id="work" className="pt-4 pb-16 px-6 relative overflow-visible">
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="mb-8">
+        <div className="mb-3">
           <h2 className="text-3xl font-bold mb-4">Our Work</h2>
           <p className="text-white/50 max-w-xl">Every project tells a story. Browse our completed work across all service categories.</p>
         </div>
@@ -823,7 +823,7 @@ const WhatWeDo = () => {
           </div>
         </div>
 
-        <div className="relative mt-5">
+        <div className="relative mt-3">
           {/* Blueprint Background for Portfolio - Now Sticky with rotation and optimized */}
           <div className="absolute inset-0 opacity-[0.1] pointer-events-none flex items-center justify-center sticky top-1/2 -translate-y-1/2 h-[50vh] will-change-transform" style={{ transform: 'translateY(-50%) translateZ(0)' }}>
             <div 
@@ -1010,7 +1010,7 @@ export default function App() {
       </section>
 
       {/* --- VALUE PROP IN DETAIL --- */}
-      <section id="services" className="py-24 px-6 relative">
+      <section id="services" className="pt-24 pb-12 px-6 relative">
         <div className="max-w-7xl mx-auto">
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-4">Mastering Every Detail</h2>
