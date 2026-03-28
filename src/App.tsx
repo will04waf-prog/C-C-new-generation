@@ -823,7 +823,7 @@ const WhatWeDo = () => {
           </div>
         </div>
 
-        <div className="relative -mt-40">
+        <div className="relative mt-8">
           {/* Blueprint Background for Portfolio - Now Sticky with rotation and optimized */}
           <div className="absolute inset-0 opacity-[0.1] pointer-events-none flex items-center justify-center sticky top-1/2 -translate-y-1/2 h-[50vh] will-change-transform" style={{ transform: 'translateY(-50%) translateZ(0)' }}>
             <div 
