@@ -17,8 +17,7 @@ import {
   Menu,
   X,
   Phone,
-  Send,
-  Grid3x3
+  Send
 } from 'lucide-react';
 
 // --- Components ---
@@ -718,7 +717,6 @@ const WhatWeDo = () => {
     { id: 'Remodeling', icon: Hammer, label: 'REMODELING' },
     { id: 'Brickwork', icon: Layers, label: 'BRICKWORK' },
     { id: 'Painting', icon: PaintBucket, label: 'PAINTING' },
-    { id: 'Ceramic', icon: Grid3x3, label: 'CERAMIC' }
   ];
 
   const fencingImages = [
@@ -751,7 +749,10 @@ const WhatWeDo = () => {
     { src: "/305ec021-d055-40d3-be06-5899ec93f052.jpeg", alt: "Remodeling Project 13" },
     { src: "/032c856c-9bd3-496d-8755-24037346e406.jpeg", alt: "Remodeling Project 14" },
     { src: "/9fb91971-dfd7-44e5-a882-cb9c0473546d.jpeg", alt: "Remodeling Project 15" },
-    { src: "/9124f445-89c3-45bf-860c-32ca28b87aa2.jpeg", alt: "Remodeling Project 16" }
+    { src: "/9124f445-89c3-45bf-860c-32ca28b87aa2.jpeg", alt: "Remodeling Project 16" },
+    { src: "/2310859f-5821-46f8-9e3a-fc89b648130e.jpeg", alt: "Remodeling Project 17" },
+    { src: "/50c0320f-6e96-4c2a-a524-f20faadabe93.jpeg", alt: "Remodeling Project 18" },
+    { src: "/cec3ac75-f5f8-49e3-994b-e02c5b999d52.jpeg", alt: "Remodeling Project 19" }
   ];
 
   const brickworkImages = [
@@ -763,12 +764,6 @@ const WhatWeDo = () => {
     { src: "/6afd26b0-0f88-4b47-bdc0-7967f4578107.jpeg", alt: "Brickwork Project 06" },
     { src: "/a3deb913-b4c1-4161-be69-11a98e017792.jpeg", alt: "Brickwork Project 07" },
     { src: "/bfac4334-58ea-46ea-bdc0-43dea72992e9.jpeg", alt: "Brickwork Project 08" }
-  ];
-
-  const ceramicImages = [
-    { src: "/2310859f-5821-46f8-9e3a-fc89b648130e.jpeg", alt: "Ceramic Project 01" },
-    { src: "/50c0320f-6e96-4c2a-a524-f20faadabe93.jpeg", alt: "Ceramic Project 02" },
-    { src: "/cec3ac75-f5f8-49e3-994b-e02c5b999d52.jpeg", alt: "Ceramic Project 03" }
   ];
 
   const paintingImages = [
@@ -784,9 +779,8 @@ const WhatWeDo = () => {
   const portfolioData: Record<string, { src: string, alt: string }[]> = {
     'Fencing': fencingImages,
     'Remodeling': remodelingImages,
-    'Painting': paintingImages,
     'Brickwork': brickworkImages,
-    'Ceramic': ceramicImages
+    'Painting': paintingImages,
   };
 
   const currentCategory = categories.find(c => c.id === activeCategory)!;
