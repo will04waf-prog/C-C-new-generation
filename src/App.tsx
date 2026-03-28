@@ -470,15 +470,14 @@ const ContactForm = () => {
     setError(null);
 
     try {
-      const response = await fetch('https://services.leadconnectorhq.com/hooks/nN4wWxnzfijMYbmezLTC/webhook-trigger/d79f1cd6-29f9-4469-9fab-8311a104841c', {
+      const response = await fetch(LEAD_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           submittedAt: new Date().toISOString(),
-          source: window.location.href
+          source: 'contact-form',
+          pageUrl: window.location.href,
         }),
       });
 
@@ -899,7 +898,7 @@ const WhatWeDo = () => {
   );
 };
 
-const WEBHOOK_URL = 'https://services.leadconnectorhq.com/hooks/nN4wWxnzfijMYbmezLTC/webhook-trigger/d79f1cd6-29f9-4469-9fab-8311a104841c';
+const LEAD_ENDPOINT = '/api/forward-lead';
 
 export default function App() {
   const { scrollYProgress } = useScroll();
@@ -916,7 +915,7 @@ export default function App() {
   useEffect(() => {
     const handleCallEnded = (event: Event) => {
       const detail = (event as CustomEvent).detail ?? {};
-      fetch(WEBHOOK_URL, {
+      fetch(LEAD_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
